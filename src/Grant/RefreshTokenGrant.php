@@ -157,7 +157,7 @@ class RefreshTokenGrant extends AbstractGrant
         // Generate a new access token and assign it the correct sessions
         $newAccessToken = new AccessTokenEntity($this->server);
         $newAccessToken->setId(SecureKey::generate());
-        $newAccessToken->setExpireTime($this->getAccessTokenTTL() + time());
+        $newAccessToken->setExpireTime( $oldRefreshToken->getExpireTime() );
         $newAccessToken->setSession($session);
 
         foreach ($newScopes as $newScope) {
@@ -170,7 +170,7 @@ class RefreshTokenGrant extends AbstractGrant
 
         $this->server->getTokenType()->setSession($session);
         $this->server->getTokenType()->setParam('access_token', $newAccessToken->getId());
-        $this->server->getTokenType()->setParam('expires_in', $this->getAccessTokenTTL());
+        $this->server->getTokenType()->setParam('expires_in', $newAccessToken->getExpireTime() - time() );
 
         // Expire the old refresh token
         $oldRefreshToken->expire();
@@ -185,7 +185,7 @@ class RefreshTokenGrant extends AbstractGrant
             $newRefreshToken->setId($oldRefreshToken->getId());
         }
 
-        $newRefreshToken->setExpireTime($this->getRefreshTokenTTL() + time());
+        $newRefreshToken->setExpireTime( $newAccessToken->getExpireTime() );
         $newRefreshToken->setAccessToken($newAccessToken);
         $newRefreshToken->save();
 
