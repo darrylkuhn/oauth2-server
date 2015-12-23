@@ -29,8 +29,8 @@ class UnauthorizedClientException extends OAuthException
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($message = 'The client is not authorized to request an access token using this method.')
     {
-        parent::__construct('The client is not authorized to request an access token using this method.');
+        parent::__construct($message);
     }
 }

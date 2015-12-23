@@ -29,8 +29,8 @@ class InvalidRefreshException extends OAuthException
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($message = 'The refresh token is invalid.')
     {
-        parent::__construct('The refresh token is invalid.');
+        parent::__construct($message);
     }
 }

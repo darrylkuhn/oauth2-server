@@ -29,8 +29,8 @@ class AccessDeniedException extends OAuthException
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($msg='The resource owner or authorization server denied the request.')
     {
-        parent::__construct('The resource owner or authorization server denied the request.');
+        parent::__construct($msg);
     }
 }
